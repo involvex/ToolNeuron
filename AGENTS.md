@@ -62,7 +62,7 @@ Explicitly out of scope: tool calling, Termux integration, anything cloud.
 - `:app` — `compileSdk 37`, `minSdk 31`, `targetSdk 37`
 - Library modules — `compileSdk 36.1`, `minSdk 29` (plugins: `minSdk 31`)
 - ABIs: `arm64-v8a`, `x86_64` (every module)
-- `applicationId` / namespace: `com.dark.tool_neuron`
+- `applicationId` / namespace: `com.involvex.tool_neuron`
 - `versionCode 31`, `versionName 3.0` (in `gradle.properties` as `tn.versionCode` / `tn.versionName`)
 - `jniLibs.useLegacyPackaging = true` everywhere
 
@@ -111,13 +111,13 @@ Gradle modules (12): `:app`, `:hxs`, `:hxs_encryptor`, `:download_manager`, `:ne
 `:native-server`, `:plugin-exc`, `:plugin-api`, `:plugins:notes`, `:plugins:counter`,
 `:plugins:expense`.
 
-> **Naming collision warning.** `com.dark.tool_neuron.plugin.*` (in-app *web* plugin system:
+> **Naming collision warning.** `com.involvex.tool_neuron.plugin.*` (in-app *web* plugin system:
 > `PluginModule`, `WebPlugin`, `PluginHubScreen`) is a **different, older system** from
 > `com.dark.plugin_exc.*` / `com.dark.plugin_api.*` (DEX plugin runtime:
 > `PluginExecutor`, `PluginRegistry`, `PluginInstallScreen`). Both are live in `:app`. Two
 > classes are named `PluginRegistry` and two are named `Plugin` — always check the import.
 
-### `:app` source map (`com.dark.tool_neuron`)
+### `:app` source map (`com.involvex.tool_neuron`)
 
 | Package | Contents |
 |---|---|
@@ -259,7 +259,7 @@ If you see `[CXX1300] CMake '3.31.6' was not found in SDK, PATH, or by cmake.dir
 ./gradlew :app:testDebugUnitTest
 
 # Single test class
-./gradlew :app:connectedDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=com.dark.tool_neuron.PhaseOneSecurityTest
+./gradlew :app:connectedDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=com.involvex.tool_neuron.PhaseOneSecurityTest
 ```
 
 There is **no CI**, no lint baseline, no detekt/ktlint/spotless, and no git hooks.
@@ -325,7 +325,7 @@ the build — `dependencyResolutionManagement` uses `FAIL_ON_PROJECT_REPOS`.
    decision is made in `libhxs_encryptor.so` and crosses JNI as an opaque token or bool. No
    boolean-trust-through-JNI, no Kotlin-side `if (verify)` gating.
 3. **Never write fully-qualified class names inline.** `import` at the top, short name in the body.
-4. **ViewModels live under `com.dark.tool_neuron.viewmodel`.** Never co-locate a VM with its screen.
+4. **ViewModels live under `com.involvex.tool_neuron.viewmodel`.** Never co-locate a VM with its screen.
 5. **No comments in source** except a one-liner `//` for a non-obvious *why*. No decorative
    banners, no block comments, no KDoc on internal/private. Names and structure must
    self-document. (Configuration files — `*.pro`, `*.gradle.kts` — do use explanatory comments.)
@@ -663,7 +663,7 @@ the rest are still open.)
 `PluginPrefsRepository`, `RepositoryDataStore`,
 `ModelConfigScreen`,
 `RepositorySettings`, `GuidePluginsScreen`, `GuideImagesScreen`, and the
-`com.dark.tool_neuron.plugin.*` web-plugin system (`PluginModule`, `WebPlugin`,
+`com.involvex.tool_neuron.plugin.*` web-plugin system (`PluginModule`, `WebPlugin`,
 `PluginHubScreen`, `ToolDef`).
 
 ---

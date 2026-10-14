@@ -1,7 +1,7 @@
 # NavScreens — sealed class routes must survive shrinking so Navigation
 # can resolve destinations by route string at runtime.
--keep class com.dark.tool_neuron.model.NavScreens { *; }
--keep class com.dark.tool_neuron.model.NavScreens$* { *; }
+-keep class com.involvex.tool_neuron.model.NavScreens { *; }
+-keep class com.involvex.tool_neuron.model.NavScreens$* { *; }
 
 # Kotlin serialization — keeps @Serializable class structure intact.
 -keepattributes *Annotation*, InnerClasses, Signature, EnclosingMethod

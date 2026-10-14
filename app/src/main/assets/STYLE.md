@@ -244,4 +244,4 @@ assets/
 - No service-side analytics — see "no telemetry."
 - No tooltips on buttons — `aria-label` + `title` is enough.
 
-If you find yourself adding any of these, stop and ask whether the asset is the right place. The chat UI inside the app (`com.dark.tool_neuron.ui.screens.home_screen`) is the rich surface. These two files are the polite, lean, embeddable face of the same model.
+If you find yourself adding any of these, stop and ask whether the asset is the right place. The chat UI inside the app (`com.involvex.tool_neuron.ui.screens.home_screen`) is the rich surface. These two files are the polite, lean, embeddable face of the same model.

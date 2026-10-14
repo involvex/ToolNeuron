@@ -6,6 +6,8 @@ The point isn't to clone ChatGPT into your pocket. It's to give you a chat surfa
 
 [Play Store](https://play.google.com/store/apps/details?id=com.dark.tool_neuron) · [Repo](https://github.com/Siddhesh2377/ToolNeuron) · [Releases](https://github.com/Siddhesh2377/ToolNeuron/releases) · [Issues](https://github.com/Siddhesh2377/ToolNeuron/issues) · [Discord](https://discord.gg/mVPwHDhrAP)
 
+> Fork note: this tree builds as `com.involvex.tool_neuron` (app label "Tool-Neuron Fork") so it installs side-by-side with the upstream `com.dark.tool_neuron` release. Store/repo/issue links above point at upstream.
+
 
 ## What it does
 

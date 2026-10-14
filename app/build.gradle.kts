@@ -22,13 +22,13 @@ val hasReleaseSigning = tnKeystorePath != null &&
     tnKeyPassword != null
 
 android {
-    namespace = "com.dark.tool_neuron"
+    namespace = "com.involvex.tool_neuron"
     compileSdk {
         version = release(37)
     }
 
     defaultConfig {
-        applicationId = "com.dark.tool_neuron"
+        applicationId = "com.involvex.tool_neuron"
         minSdk = 31
         targetSdk = 37
         versionCode = (rootProject.findProperty("tn.versionCode") as String).toInt()
