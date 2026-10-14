@@ -50,7 +50,7 @@ Trust decisions live in C++ so an obfuscation bypass at the Kotlin layer doesn't
 - Auth is Argon2id (t=4, m=128 MiB, p=1, outLen=32). PIN must be 6 digits and pass weak-PIN rejection.
 - After verify, a 32-byte opaque session token registers with the native `PolicyEngine`. Every gated feature crosses JNI as `PolicyEngine.isAllowed(Feature, sessionToken)`.
 - DEK is wrapped by an Android Keystore AES-256-GCM key (StrongBox-preferred, TEE fallback) and stored XOR-masked at `<filesDir>/app_bootstrap/k.bin`. The crypto is the wrapped ciphertext; the XOR is anti-grep.
-- Encrypted prefs at `<filesDir>/app_prefs/` are sealed under `HKDF(DEK, "tn.app_prefs.user_key.v1")`. `AuthState` gets a second AEAD layer keyed on `HKDF(DEK, "tn.app_prefs.auth_key.v1")`.
+- Encrypted prefs at `<filesDir>/app_prefs/` are sealed under `HKDF(DEK, "tn.app_prefs.user_key.v2")`. `AuthState` gets a second AEAD layer keyed on `HKDF(DEK, "tn.app_prefs.auth_key.v2")`. Every vault in the app uses a `.v2` signer-bound key — see `CLAUDE.md` for the full inventory.
 - Lockout: three free, then `1m → 5m → 15m → 1h → 4h → 12h → 24h`. Tenth wipes device-side state. Clock rollback past five minutes is double-penalized.
 - Panic PIN, if set, triggers `hardWipe()` and returns `VerifyResult.Wiped` — indistinguishable from "attempts exceeded".
 - TOFU manifest of every `.so` in `nativeLibraryDir`, rebound to install identity (`{signerHash, longVersionCode, lastUpdateTime}`). Hook baseline verify catches inline hooks.
@@ -97,9 +97,24 @@ TN_KEY_ALIAS=...
 TN_KEY_PASSWORD=...
 ```
 
-Missing keys fall back to an unsigned release so the dev flow stays open. `compileSdk 37`, `minSdk 31`, ABI filters `arm64-v8a` + `x86_64`, JVM 17.
+Missing keys fall back to an unsigned release so the dev flow stays open. `compileSdk 37`, `minSdk 31`, ABI filters `arm64-v8a` + `x86_64`. Toolchain is JDK 21 (Gradle daemon + Kotlin language level) with bytecode pinned to 17; native modules pin CMake `3.31.6` exactly — AGP rejects the build if the SDK lacks that patch version.
 
 `:hxs_encryptor` fetches BoringSSL and liboqs via CMake `FetchContent`. `:native-server` fetches cpp-httplib v0.18.5 and nlohmann/json v3.11.3 the same way. The LSP sometimes flags missing `openssl/mem.h`; that's a false positive — build-green is the source of truth.
+
+## Testing
+
+No CI — everything runs locally. There is no lint/detekt/ktlint/spotless config and no git hooks.
+
+```sh
+# Instrumented tests (needs a connected device or emulator)
+./gradlew :app:connectedDebugAndroidTest
+./gradlew :hxs:connectedDebugAndroidTest
+./gradlew :hxs_encryptor:connectedDebugAndroidTest
+
+# :networking's WebNativeSmokeTest needs live network and fails offline
+```
+
+52 instrumented tests in `:app` (security, integrity, lockout, RAG-adjacent guards), 68 in `:hxs`, 48 in `:hxs_encryptor`. Tests that touch native global state must bracket with `PolicyEngine.resetForTesting()` + `BootIntegrity.setRelaxedForTesting(true)` — see `CLAUDE.md` Test layout.
 
 ## Repo conventions
 
